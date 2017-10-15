@@ -40,24 +40,32 @@ function render () {
   document.getElementById('app').innerHTML = renderWombats(wombats)
   document.getElementById('addButton').addEventListener('click', addWombat)
   wombats.forEach(wombat => {
-    document.getElementById(wombat).addEventListener('click', delWombat)
+    document.getElementById(`delete${wombat}`)
+      .addEventListener('click', delWombat.bind(null, wombat))
+    document.getElementById(`update${wombat}`)
+      .addEventListener('click', updateWombat.bind(null, wombat))
   })
 }
 
 function renderWombats (wombats) {
   let output = '<ul>'
   for (const wombat of wombats) {
-    output += `<li>${wombat} <a href="#" id="${wombat}">x</a></li>`
+    output += `
+      <li>
+        <span>${wombat}</span>
+        <a href="#" id="delete${wombat}">x</a>
+        <input id="updated${wombat}" value="${wombat}"><button id="update${wombat}">Update</button>
+      </li>`
   }
   output += '</ul>'
   output += '<input id="newWombat"><button id="addButton">Add</buton>'
   return output
 }
 
-function delWombat (e) {
+function delWombat (wombat, e) {
   const action = {
     type: 'DEL_WOMBAT',
-    wombat: e.target.id
+    wombat: wombat
   }
   store.dispatch(action)
   e.preventDefault()
@@ -67,6 +75,16 @@ function addWombat (e) {
   const action = {
     type: 'ADD_WOMBAT',
     wombat: document.getElementById('newWombat').value
+  }
+  store.dispatch(action)
+  e.preventDefault()
+}
+
+function updateWombat (wombat, e) {
+  const action = {
+    type: 'UPDATE_WOMBAT',
+    oldName: wombat,
+    newName: document.getElementById(`updated${wombat}`).value
   }
   store.dispatch(action)
   e.preventDefault()
