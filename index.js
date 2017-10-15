@@ -14,6 +14,12 @@ const wombatReducer = (state = initialWombatState, action) => {
       return {
         wombats: state.wombats.filter((wombat) => wombat !== action.wombat)
       }
+    case 'UPDATE_WOMBAT':
+      return {
+        wombats: state.wombats.map((wombat) => {
+          return wombat === action.oldName ? action.newName : wombat
+        })
+      }
     default:
       return state
   }
