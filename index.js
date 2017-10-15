@@ -38,14 +38,26 @@ function render () {
   const state = store.getState()
   const wombats = state.wombats
   document.getElementById('app').innerHTML = renderWombats(wombats)
+  wombats.forEach(wombat => {
+    document.getElementById(wombat).addEventListener('click', delWombat)
+  })
 }
 
 function renderWombats (wombats) {
   let output = '<ul>'
   for (const wombat of wombats) {
-    output += `<li>${wombat}</li>`
+    output += `<li>${wombat} <a href="#" id="${wombat}">x</a></li>`
   }
   output += '</ul>'
   return output
+}
+
+function delWombat (e) {
+  const action = {
+    type: 'DEL_WOMBAT',
+    wombat: e.target.id
+  }
+  store.dispatch(action)
+  e.preventDefault()
 }
 
