@@ -1,31 +1,9 @@
 import { createStore } from 'redux'
 
-const initialWombatState = {
-  wombats: ['Gertrude', 'Bartholemew']
-}
+import reducer from './reducer'
+import actions from './actions'
 
-const wombatReducer = (state = initialWombatState, action) => {
-  switch (action.type) {
-    case 'ADD_WOMBAT':
-      return {
-        wombats: [...state.wombats, action.wombat]
-      }
-    case 'DEL_WOMBAT':
-      return {
-        wombats: state.wombats.filter((wombat) => wombat !== action.wombat)
-      }
-    case 'UPDATE_WOMBAT':
-      return {
-        wombats: state.wombats.map((wombat) => {
-          return wombat === action.oldName ? action.newName : wombat
-        })
-      }
-    default:
-      return state
-  }
-}
-
-const store = createStore(wombatReducer,
+const store = createStore(reducer,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 )
 
@@ -63,30 +41,22 @@ function renderWombats (wombats) {
 }
 
 function delWombat (wombat, e) {
-  const action = {
-    type: 'DEL_WOMBAT',
-    wombat: wombat
-  }
+  const action = actions.delWombat(wombat)
   store.dispatch(action)
   e.preventDefault()
 }
 
 function addWombat (e) {
-  const action = {
-    type: 'ADD_WOMBAT',
-    wombat: document.getElementById('newWombat').value
-  }
+  const wombat = document.getElementById('newWombat').value
+  const action = actions.addWombat(wombat)
   store.dispatch(action)
   e.preventDefault()
 }
 
 function updateWombat (wombat, e) {
-  const action = {
-    type: 'UPDATE_WOMBAT',
-    oldName: wombat,
-    newName: document.getElementById(`updated${wombat}`).value
-  }
+  const oldName = wombat
+  const newName = document.getElementById(`updated${wombat}`).value
+  const action = actions.updateWombat(oldName, newName)
   store.dispatch(action)
   e.preventDefault()
 }
-
