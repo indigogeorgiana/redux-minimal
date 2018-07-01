@@ -17,12 +17,8 @@ const wombatReducer = (state = initialWombatState, action) => {
     case 'UPDATE_WOMBAT':
       return {
         wombats: state.wombats.map((wombat) => {
-          if (wombat == action.wombat) {
-            wombat = action.newName
-            return wombat
-          } else {
-            return wombat
-          }
+          const updateName = action.newName
+          return (wombat == action.wombat ? updateName : wombat)
         })
       }
     default:
