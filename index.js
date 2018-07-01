@@ -14,10 +14,13 @@ const wombatReducer = (state = initialWombatState, action) => {
       return {
         wombats: state.wombats.filter((wombat) => wombat !== action.wombat)
       }
+    case 'UPDATE_WOMBAT':
+      return {
+        wombats: state.wombats[state.wombats.findIndex((wombat) => { return wombat === action.oldWombat } = action.newWombat))]
+      }
     default:
       return state
   }
-}
 
 const store = createStore(wombatReducer,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
