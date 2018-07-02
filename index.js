@@ -17,8 +17,7 @@ const wombatReducer = (state = initialWombatState, action) => {
     case 'UPDATE_WOMBAT':
       return {
         wombats: state.wombats.map((wombat) => {
-          const updateName = action.newName
-          return (wombat == action.wombat ? updateName : wombat)
+          return (wombat == action.wombat ? action.newName : wombat)
         })
       }
     default:
@@ -43,8 +42,19 @@ function render () {
 
 function renderWombats (wombats) {
   let output = '<ul>'
+  function del (wombat) {
+    return {
+      type: 'DEL_WOMBAT',
+      wombat
+    }
+  }
+
+  function delClick (wombat) {
+    return store.dispatch(del(wombat))
+  }
+  
   for (const wombat of wombats) {
-    output += `<li>${wombat}</li>`
+    output += `<li>${wombat}<button id=${wombat} onClick=delClick(${wombat})>Delete</li>`
   }
   output += '</ul>'
   return output
