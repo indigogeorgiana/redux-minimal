@@ -34,14 +34,18 @@ document.addEventListener('DOMContentLoaded', () => {
   store.subscribe(render)
 })
 
-document.getElementById(`${wombat}`).addEventListener('click', function () {
-  store.dispatch('DEL_WOMBAT')
-})
-
 function render () {
   const state = store.getState()
   const wombats = state.wombats
-  document.getElementById('app').innerHTML = renderWombats(wombats)
+  document.getElementById('app').innerHTML = renderWombats(state.wombats)
+  // for every wombat in state i'm going to get document by X
+  for (let index in wombats) {
+    document.getElementById(wombats[index]).addEventListener('click', function () {
+      store.dispatch({
+        type: 'DEL_WOMBAT',
+        wombat: wombats[index]})
+    })
+  }
 }
 
 function renderWombats (wombats) {
