@@ -39,11 +39,21 @@ function render () {
   const wombats = state.wombats
   document.getElementById('app').innerHTML = renderWombats(state.wombats)
   // for every wombat in state i'm going to get document by X
-  for (let index in wombats) {
-    document.getElementById(wombats[index]).addEventListener('click', function () {
+  for (let wombat of wombats) {
+    document.getElementById(wombat).addEventListener('click', function () {
       store.dispatch({
         type: 'DEL_WOMBAT',
-        wombat: wombats[index]})
+        wombat: wombat})
+    })
+    document.getElementById(`a${wombat}`).addEventListener('click', function () {
+      console.log(wombat)
+      const updatedWombat = document.getElementById('updateWombat').value
+      // console.log(updatedWombat)
+      store.dispatch({
+        type: 'UPDATE_WOMBAT',
+        wombat: wombat,
+        newWombat: updatedWombat
+      })
     })
   }
   document.getElementById('add').addEventListener('click', function () {
@@ -58,9 +68,12 @@ function render () {
 function renderWombats (wombats) {
   let output = '<ul>'
   for (const wombat of wombats) {
-    output += `<li>${wombat}</li><input type='submit' value='delete' id=${wombat}>`
+    output += `<li>${wombat}</li>`
+    output += `<input type='submit' value='delete' id=${wombat}>`
+    output += `<input type='submit' value='update' id=a${wombat}>`
   }
   output += '</ul>'
+  output += '<input type="text" id="updateWombat" placeholder="update your Wombat"/>'
 
   output += '<input type="text" id="addWombat" placeholder="add your Wombat" /> '
   output += '<input type="submit" value="Add" id="add" />'
