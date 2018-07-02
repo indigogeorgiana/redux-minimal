@@ -38,16 +38,21 @@ function render () {
   const state = store.getState()
   const wombats = state.wombats
   document.getElementById('app').innerHTML = renderWombats(wombats)
-  document.getElementById('wombat').addEventListener('click', deleteWombat)
-  document.getElementById('but').addEventListener('click', addWombat)
+  for (const wombat of wombats) {
+    document.getElementById(wombat).addEventListener('click', deleteWombat.bind(null, wombat))
+    document.getElementById(`edit${wombat}`).addEventListener('click', updateWombat.bind(null, wombat))
+  }
+  document.getElementById('addBut').addEventListener('click', addWombat)
 }
 
 function renderWombats (wombats) {
-  let add = `<input type='text'id='add'> <input id='but' type='submit' value='Add Wombat'>`
-  let edit = `<input type='text'id='edit'> <input id='butty' type='submit' value='Edit Wombat'>`
+  let add = `<input type='text' id='add'> <input id='addBut' type='submit'>`
   let output = '<ul>'
   for (const wombat of wombats) {
-    output += `<li>${wombat} <button id='wombat' name=${wombat}>Delete</li><br>`
+    output += `<div><li>${wombat} 
+    <button id=${wombat} name=${wombat}>Delete</button> 
+    <input type='text' id=input${wombat}> <input id='edit${wombat}' type='submit'> 
+    </li></div><br>`
   }
   output += '</ul>'
   return output + add
@@ -60,13 +65,17 @@ function addWombat () {
   })
 }
 
-function deleteWombat () {
+function deleteWombat (wombat) {
   store.dispatch({
     type: 'DEL_WOMBAT',
-    wombat: document.getElementById('wombat').name
+    wombat: wombat
   })
 }
 
-function updateWombat () {
-  
+function updateWombat (wombat) {
+  store.dispatch({
+    type: 'UPDATE_WOMBAT',
+    wombat: wombat,
+    newWombat: document.getElementById(`input${wombat}`).value
+  })
 }
