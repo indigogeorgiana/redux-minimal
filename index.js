@@ -14,6 +14,12 @@ const wombatReducer = (state = initialWombatState, action) => {
       return {
         wombats: state.wombats.filter((wombat) => wombat !== action.wombat)
       }
+    case 'UPDATE_WOMBAT':
+      return {
+        wombats: state.wombats.map((wombat) => {
+          return wombat === action.wombat ? action.newWombat : wombat
+        })
+      }
     default:
       return state
   }
@@ -28,6 +34,10 @@ document.addEventListener('DOMContentLoaded', () => {
   store.subscribe(render)
 })
 
+document.getElementById(`${wombat}`).addEventListener('click', function () {
+  store.dispatch('DEL_WOMBAT')
+})
+
 function render () {
   const state = store.getState()
   const wombats = state.wombats
@@ -37,7 +47,7 @@ function render () {
 function renderWombats (wombats) {
   let output = '<ul>'
   for (const wombat of wombats) {
-    output += `<li>${wombat}</li>`
+    output += `<li>${wombat}</li><input type='submit' value='delete' id=${wombat}>`
   }
   output += '</ul>'
   return output
