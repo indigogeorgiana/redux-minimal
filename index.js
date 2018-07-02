@@ -38,12 +38,18 @@ function render () {
   const state = store.getState()
   const wombats = state.wombats
   document.getElementById('app').innerHTML = renderWombats(wombats)
+  document.getElementById('wombat').addEventListener('click', () => {
+    store.dispatch({
+      type: 'DEL_WOMBAT',
+      wombat: document.getElementById('wombat').name
+    })
+  })
 }
 
 function renderWombats (wombats) {
   let output = '<ul>'
   for (const wombat of wombats) {
-    output += `<li>${wombat}</li>`
+    output += `<li>${wombat} <button id='wombat' name=${wombat}>Delete</li><br>`
   }
   output += '</ul>'
   return output
