@@ -41,18 +41,31 @@ function delWom () {
   })
 }
 
+function addWom () {
+  store.dispatch({
+    type: 'ADD_WOMBAT',
+    wombat: document.getElementById('womName').value
+  })
+}
+
 function render () {
   const state = store.getState()
   const wombats = state.wombats
   document.getElementById('app').innerHTML = renderWombats(wombats)
   document.getElementById('wombat').addEventListener('click', delWom)
+  document.getElementById('addWom').addEventListener('click', addWom)
 }
 
 function renderWombats (wombats) {
   let output = '<ul>'
   for (const wombat of wombats) {
-    output += `<li>${wombat}<button id='wombat' name=${wombat}>Delete</li>`
+    output += `<li>${wombat}<button id="wombat" name=${wombat}>Delete</li>`
   }
-  output += '</ul>'
+  output += '</ul> <br> <input type="text" id="womName"> <button id="addWom"> Add'
   return output
 }
+
+// function renderAdd () {
+//   const output = '<input type="text" id="womName"> <button id="addWom"> Add'
+//   return output
+// }
