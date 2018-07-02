@@ -14,11 +14,35 @@ document.addEventListener('DOMContentLoaded', () => {
   store.subscribe(render)
 })
 
+function wombatdeleter (wombat) {
+  return {
+    type: 'DEL_WOMBAT',
+    wombat: wombat
+  }
+}
+
+function createWombat (wombat) {
+  return {
+    type: 'ADD_WOMBAT',
+    wombat: wombat
+  }
+}
+
+function sendToStore (wombat) {
+  const action = createWombat(wombat)
+  store.dispatch(action)
+}
+
+function wombatRemover (wombat) {
+  const action = wombatdeleter(wombat)
+  store.dispatch(action)
+}
+
 function render () {
   const state = store.getState()
   const wombats = state.wombats
   ReactDOM.render(
-    <App wombats={wombats} />,
+    <App wombats={wombats} rem={wombatRemover} />,
     document.getElementById('app')
   )
 }
