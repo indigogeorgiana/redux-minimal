@@ -34,27 +34,24 @@ document.addEventListener('DOMContentLoaded', () => {
   store.subscribe(render)
 })
 
+function delWom () {
+  store.dispatch({
+    type: 'DEL_WOMBAT',
+    wombat: document.getElementById('wombat').name
+  })
+}
+
 function render () {
   const state = store.getState()
   const wombats = state.wombats
   document.getElementById('app').innerHTML = renderWombats(wombats)
+  document.getElementById('wombat').addEventListener('click', delWom)
 }
 
 function renderWombats (wombats) {
   let output = '<ul>'
-  function del (wombat) {
-    return {
-      type: 'DEL_WOMBAT',
-      wombat
-    }
-  }
-
-  function delClick (wombat) {
-    return store.dispatch(del(wombat))
-  }
-  
   for (const wombat of wombats) {
-    output += `<li>${wombat}<button id=${wombat} onClick=delClick(${wombat})>Delete</li>`
+    output += `<li>${wombat}<button id='wombat' name=${wombat}>Delete</li>`
   }
   output += '</ul>'
   return output
