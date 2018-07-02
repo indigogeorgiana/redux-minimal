@@ -46,6 +46,13 @@ function render () {
         wombat: wombats[index]})
     })
   }
+  document.getElementById('add').addEventListener('click', function () {
+    const newWombat = document.getElementById('addWombat').value
+    store.dispatch({
+      type: 'ADD_WOMBAT',
+      wombat: newWombat
+    })
+  })
 }
 
 function renderWombats (wombats) {
@@ -54,5 +61,8 @@ function renderWombats (wombats) {
     output += `<li>${wombat}</li><input type='submit' value='delete' id=${wombat}>`
   }
   output += '</ul>'
+
+  output += '<input type="text" id="addWombat" placeholder="add your Wombat" /> '
+  output += '<input type="submit" value="Add" id="add" />'
   return output
 }
