@@ -67,4 +67,6 @@ function deleteWombat () {
   })
 }
 
-function updateWombat
+function updateWombat () {
+  
+}
